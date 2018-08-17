@@ -11,7 +11,7 @@ const config = {
 };
 
 const app = new App(config);
-const apiBase = "http://192.168.0.154/api/v1/"
+const apiBase = "http://192.168.0.101/api/v1/"
 
 // =================================================================================
 // App Logic
@@ -49,6 +49,63 @@ app.setHandler({
       let res = request('GET', apiBase+"getSate");
       let response = JSON.parse(res.getBody('utf8'));
       this.tell("Actuellement, vous profitez du mode "+response["sequencesName"])
+    },
+    PlaySimonIntent: function(){
+      this.followUpState("simonState").ask("Voulez vous jouer au jeux de Simon ?")
+    },
+    simonState: {
+      YESintent: function(){
+        let speech = "Bienvenue dans le jeux de simon."
+        this.toIntent("color.SayColorIntent",speech)
+      },
+      NOIntent: function(){
+        this.tell("J'annule la partie")
+      },
+
+      },
+      color: {
+        SayColorIntent: function(keyword){
+        let userSentence = "rouge "+keyword.value
+        let sentence = ""
+        let numberToClass=
+        [
+            "bleu", //2
+            "vert",//4
+            "jaune",//5
+            "rouge",//6
+        ]
+        let colors = []
+        let color =""
+        colors = this.getSessionAttribute("colors");
+        if(colors===undefined){
+          colors = ["rouge"]
+          color =chooseRandom(numberToClass)
+
+        }else{
+          color =chooseRandom(numberToClass)
+          if(colors.join(" ") != userSentence){
+            this.tell("Vous avez perdu avec "+colors.length+" mots, vous avez dit "+userSentence+" vous devriez dire "+colors.join(" ") )
+            return false;
+          }
+        }
+        colors.push(color)
+        this.setSessionAttribute('colors', colors);
+        let speechBuild = this.speechBuilder()
+        sentence += colors.join(" ")
+        let colorsINT = Array(6*3)
+        colorsINT.fill(0)
+        let colorsINTDDD = []
+        for (var i = 0; i <colors.length; i++) {
+          colorsINT[i] = numberToClass.indexOf(colors[i])
+        }
+        while(colorsINT.length) colorsINTDDD.push(colorsINT.splice(0,6));
+        let data = JSON.stringify((("[{\"data\": "+JSON.stringify(colorsINTDDD)+"}\\n]")))
+        let uri = encodeURI(apiBase+"setPreciseState?seq="+data)
+        console.log(uri)
+        //let res = request('GET', uri);
+
+        this.followUpState("color").ask(sentence)
+      },
     }
 });
 
