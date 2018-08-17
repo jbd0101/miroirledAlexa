@@ -4,12 +4,13 @@
   "description": "A sample voice app that works with the Jovo framework",
   "main": "index.js",
   "dependencies": {
+    "alexa-verifier-middleware": "^1.0.1",
     "jovo-framework": "^1.0.0",
     "sync-request": "^6.0.0"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js --webhook"
   },
   "repository": {
     "type": "git",
