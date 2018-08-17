@@ -68,12 +68,12 @@ app.setHandler({
         let userSentence = "rouge "+keyword.value
         let sentence = ""
         let numberToClass=
-        [
-            "bleu", //2
-            "vert",//4
-            "jaune",//5
-            "rouge",//6
-        ]
+        {
+          "bleu": 2,
+          "vert": 4,
+          "jaune": 5,
+          "rouge": 6
+        }
         let colors = []
         let color =""
         colors = this.getSessionAttribute("colors");
@@ -96,13 +96,13 @@ app.setHandler({
         colorsINT.fill(0)
         let colorsINTDDD = []
         for (var i = 0; i <colors.length; i++) {
-          colorsINT[i] = numberToClass.indexOf(colors[i])
+          colorsINT[i] = numberToClass[colors[i]]
         }
         while(colorsINT.length) colorsINTDDD.push(colorsINT.splice(0,6));
-        let data = JSON.stringify((("[{\"data\": "+JSON.stringify(colorsINTDDD)+"}\\n]")))
-        let uri = encodeURI(apiBase+"setPreciseState?seq="+data)
+        let data = '[{"data": '+JSON.stringify(colorsINTDDD)+'}]'
+        let uri = urlencondapiBase+"setPreciseState?seq="+data
         console.log(uri)
-        //let res = request('GET', uri);
+        let res = request('GET', uri);
 
         this.followUpState("color").ask(sentence)
       },
