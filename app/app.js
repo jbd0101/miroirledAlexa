@@ -24,9 +24,10 @@ app.setHandler({
     'LAUNCH': function() {
         let speech = [
         "Salut, que dois je faire ?",
+        "Bonjour, envie d'une ambiance particulière ?",
         "Content de vous entendre de nouveau, que puis-je faire pour vous ?",
         "Oui ?",
-        "Quelle mode ?"]
+        "Quel mode ?"]
         this.ask(chooseRandom(speech));
     },
 
@@ -38,7 +39,8 @@ app.setHandler({
         let speech = [
           'Sous windows, je ferais un écran bleu, mais ici je dirai juste que ce mode n\'existe pas',
           "Malheureusement, ce mode n'existe pas",
-          "Non non non , vous essayez de lancer quelque chose qui n'existe pas, même Chuck Norris n'y arriverait pas"
+          "",
+          "Non non non, vous essayez de lancer quelque chose qui n'existe pas, même Chuck Norris n'y arriverait pas"
         ]
         this.tell(chooseRandom(speech))
       }else{
@@ -55,7 +57,7 @@ app.setHandler({
     },
     simonState: {
       YESintent: function(){
-        let speech = "Bienvenue dans le jeux de simon."
+        let speech = "Bienvenue dans le jeu de simon."
         this.toIntent("color.SayColorIntent",speech)
       },
       NOIntent: function(){
@@ -84,7 +86,7 @@ app.setHandler({
         }else{
           color =chooseRandom(numberToClass)
           if(colors.join(" ") != userSentence){
-            this.tell("Vous avez perdu avec "+colors.length+" mots, vous avez dit "+userSentence+" vous devriez dire "+colors.join(" ") )
+            this.tell("Vous avez perdu avec "+colors.length+" mots, vous avez dit "+userSentence+" vous auriez dû dire "+colors.join(" ") )
             return false;
           }
         }
