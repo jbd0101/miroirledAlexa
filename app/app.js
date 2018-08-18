@@ -11,7 +11,7 @@ const config = {
 };
 
 const app = new App(config);
-const apiBase = "http://192.168.0.101/api/v1/"
+const apiBase = "http://biome.synology.me:8080/api/v1/"
 
 // =================================================================================
 // App Logic
